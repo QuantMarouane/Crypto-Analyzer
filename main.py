@@ -2,7 +2,7 @@ from strategy import find_imbalance
 import ccxt
 
 def get_market_price(symbol):
-    exchange = ccxt.binance()
+    exchange = ccxt.kucoin()
     ticker = exchange.fetch_ticker(symbol)
     return ticker['last']
 
@@ -11,7 +11,7 @@ def initialize_bot():
     symbol = 'BTC/USDT'
     
     # جلب البيانات من المنصة
-    exchange = ccxt.binance()
+    exchange = ccxt.kucoin()
     candles = exchange.fetch_ohlcv(symbol, timeframe='1h', limit=100)
     
     # استخدام الدالة التي استوردتها لتحليل الفجوات
