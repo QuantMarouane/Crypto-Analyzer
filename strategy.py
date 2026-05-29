@@ -1,35 +1,29 @@
-# strategy.py - هذا الملف سيحتوي على منطق SMC
+# strategy.py
 
 def find_order_blocks(candles):
     """
-    هذه دالة مبسطة لاكتشاف مناطق الـ Order Blocks
-    تحليل: (Impulsive move + Imbalance)
+    دالة لاكتشاف مناطق الـ Order Blocks
     """
     order_blocks = []
-    
-    # سنقوم لاحقاً بإضافة منطق رياضي لفحص الشموع:
-    # 1. شمعة كبيرة بزخم عالي (Impulsive Candle)
-    # 2. وجود فجوة سعرية (Fair Value Gap / Imbalance)
-    
     print("Analyzing candles for Order Blocks...")
-    # منطق التحليل سيضاف هنا
     return order_blocks
 
 def identify_market_structure(candles):
-    # دالة لاكتشاف القمم والقيعان (HH, HL, LH, LL)
+    """
+    دالة لاكتشاف القمم والقيعان (BOS/CHOCH)
+    """
     print("Identifying Market Structure (BOS/CHOCH)...")
     pass
-# أضف هذا الجزء إلى ملف strategy.py
 
 def find_imbalance(candles):
     """
     البحث عن فجوة سعرية (Fair Value Gap)
-    تحليل الفرق بين شمعة n وشمعة n+2
+    تحليل الفرق بين الشمعة n والشمعة n+2
     """
     imbalances = []
     # candles هي قائمة [timestamp, open, high, low, close, volume]
     for i in range(2, len(candles) - 1):
-        # التحقق من وجود فجوة سعرية (صعودية كمثال)
-        if candles[i][3] > candles[i-2][2]: # low الحالي > high الذي يسبقه بـ شمعتين
+        # التحقق من وجود فجوة سعرية
+        if candles[i][3] > candles[i-2][2]: 
             imbalances.append(i)
     return imbalances
