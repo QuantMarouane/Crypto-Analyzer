@@ -5,7 +5,7 @@ from strategy import find_imbalance
 
 # --- إعدادات البوت ---
 TELEGRAM_TOKEN = "8821280523:AAH3kiwZgLmw5nkbRGxaU41g6_aVOBHxiw"
-CHAT_ID = "6397157109"  # وضعنا الرقم هنا ليصبح معرّفاً بشكل صحيح
+CHAT_ID = "6397157109"
 
 def send_telegram_alert(message):
     url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage?chat_id={CHAT_ID}&text={message}"
@@ -25,5 +25,13 @@ def run_analysis():
     else:
         print("🔍 لم يتم العثور على فجوات حالياً.")
 
+# --- الأتمتة (حلقة التكرار) ---
 if __name__ == "__main__":
-    run_analysis()
+    while True:
+        try:
+            run_analysis()
+        except Exception as e:
+            print(f"حدث خطأ: {e}")
+        
+        print("⏳ بانتظار التحليل القادم بعد ساعة...")
+        time.sleep(3600)  # سينتظر البوت ساعة كاملة ثم يكرر
