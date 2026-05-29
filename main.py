@@ -1,28 +1,35 @@
-from strategy import find_imbalance
+
 import ccxt
+import requests
+import time
 
-def get_market_price(symbol):
-    exchange = ccxt.kucoin()
-    ticker = exchange.fetch_ticker(symbol)
-    return ticker['last']
+# --- إعدادات البوت ---
+TELEGRAM_TOKEN = "8821280523:AAH3kiwZgLmw5nkbRGxaU41g6_aVOBHxiw"
+CHAT_ID = "هنا_يجب_أن_تضع_الـ_Chat_ID_الخاص_بك" # شرح كيف تحصله أدناه
 
-def initialize_bot():
-    print("Bot Initialized. Analyzing Market...")
-    symbol = 'BTC/USDT'
-    
-    # جلب البيانات من المنصة
+def send_telegram_alert(message):
+    url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage?chat_id={CHAT_ID}&text={message}"
+    requests.get(url)
+
+def run_analysis():
+    print("🚀 جاري تحليل السوق...")
+    # استخدام ccxt للاتصال بـ KuCoin
     exchange = ccxt.kucoin()
-    candles = exchange.fetch_ohlcv(symbol, timeframe='1h', limit=100)
+    # جلب 100 شمعة للساعة الواحدة
+    candles = exchange.fetch_ohlcv('BTC/USDT', timeframe='1h', limit=100)
     
-    # استخدام الدالة التي استوردتها لتحليل الفجوات
+    # هنا يتم استدعاء دالة تحليل الفجوات الموجودة في مشروعك
+    # (افترضنا أن find_imbalance موجودة في ملف strategy.py)
+    from strategy import find_imbalance
     imbalances = find_imbalance(candles)
     
-    # طباعة النتائج
     if imbalances:
-        print(f"✅ Found {len(imbalances)} imbalances in the last 100 candles.")
+        msg = f"✅ وجد البوت {len(imbalances)} فجوة سعرية (FVG) جديدة!"
+        print(msg)
+        send_telegram_alert(msg)
     else:
-        print("🔍 No imbalances found.")
+        print("🔍 لم يتم العثور على فجوات حالياً.")
 
+# تشغيل البوت
 if __name__ == "__main__":
-    initialize_bot()
-
+    run_analysis()
