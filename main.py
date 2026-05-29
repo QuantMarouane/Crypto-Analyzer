@@ -5,7 +5,7 @@ from strategy import find_imbalance
 
 # --- إعدادات البوت ---
 TELEGRAM_TOKEN = "8821280523:AAH3kiwZgLmw5nkbRGxaU41g6_aVOBHxiw"
-CHAT_ID = "ضع_رقم_الـ_ID_هنا" # احصل عليه من @userinfobot
+CHAT_ID = "6397157109"  # وضعنا الرقم هنا ليصبح معرّفاً بشكل صحيح
 
 def send_telegram_alert(message):
     url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage?chat_id={CHAT_ID}&text={message}"
